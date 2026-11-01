@@ -17,6 +17,6 @@ On first login use `admin` / `admin` and set a new password as prompted. Keep th
 
 ## Builds and updates
 
-GitHub Actions builds and tests the image from the upstream revision pinned in `.github/workflows/image.yml`, then publishes it to GitHub Container Registry. To update the app, review upstream changes and update the pinned revision in that workflow. Manual workflow runs rebuild the same pinned version; they do not automatically track upstream.
+GitHub Actions builds the latest upstream `main` daily and on manual request. After the startup check passes, it publishes `latest` and a tag containing the upstream commit SHA. A startup check does not catch every potential regression. Your running container must still be updated or recreated to use the new image.
 
 Before updating the container, stop it and back up the complete data directory. Preserve that directory when recreating the container. See the upstream documentation for backup and restoration details.
