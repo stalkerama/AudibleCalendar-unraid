@@ -4,11 +4,17 @@ on:
   push:
     branches: [main]
     paths: ['.github/workflows/image.yml']
+  schedule:
+    - cron: '17 8 * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
   packages: write
+
+concurrency:
+  group: audiblecalendar-image
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -18,10 +24,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: brandochdaha/AudibleCalendar
-          ref: a8b0f3e58a4e264143f5b212d95ed790a62fae2d
+          ref: main
           persist-credentials: false
       - name: Build image
-        run: docker build -t ghcr.io/stalkerama/audiblecalendar:latest .
+        run: |
+          revision=$(git rev-parse HEAD)
+          docker build --label "org.opencontainers.image.revision=$revision" --label "org.opencontainers.image.source=https://github.com/brandochdaha/AudibleCalendar" -t ghcr.io/stalkerama/audiblecalendar:latest -t "ghcr.io/stalkerama/audiblecalendar:sha-$revision" .
       - name: Verify startup
         run: |
           docker run -d --name audiblecalendar-test -p 127.0.0.1:18000:8000 ghcr.io/stalkerama/audiblecalendar:latest
@@ -38,4 +46,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish image
-        run: docker push ghcr.io/stalkerama/audiblecalendar:latest
+        run: |
+          docker push "ghcr.io/stalkerama/audiblecalendar:sha-$(git rev-parse HEAD)"
+          docker push ghcr.io/stalkerama/audiblecalendar:latest
