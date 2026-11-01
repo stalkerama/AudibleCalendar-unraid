@@ -1,0 +1,41 @@
+name: Build container image
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/image.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out upstream source
+        uses: actions/checkout@v4
+        with:
+          repository: brandochdaha/AudibleCalendar
+          ref: a8b0f3e58a4e264143f5b212d95ed790a62fae2d
+          persist-credentials: false
+      - name: Build image
+        run: docker build -t ghcr.io/stalkerama/audiblecalendar:latest .
+      - name: Verify startup
+        run: |
+          docker run -d --name audiblecalendar-test -p 127.0.0.1:18000:8000 ghcr.io/stalkerama/audiblecalendar:latest
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:18000/api/health; then exit 0; fi
+            sleep 2
+          done
+          docker logs audiblecalendar-test
+          exit 1
+      - name: Sign in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish image
+        run: docker push ghcr.io/stalkerama/audiblecalendar:latest
