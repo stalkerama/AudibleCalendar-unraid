@@ -7,7 +7,7 @@
   <Privileged>false</Privileged>
   <Support>https://github.com/brandochdaha/AudibleCalendar/issues</Support>
   <Project>https://github.com/brandochdaha/AudibleCalendar</Project>
-  <Overview>Track upcoming Audible releases from followed authors and series. Image is built from a pinned upstream revision. See https://github.com/stalkerama/AudibleCalendar-unraid</Overview>
+  <Overview>Track upcoming Audible releases from followed authors and series. Image is built daily from upstream main. See https://github.com/stalkerama/AudibleCalendar-unraid</Overview>
   <WebUI>http://[IP]:[PORT:8000]/</WebUI>
   <ExtraParams>--security-opt=no-new-privileges:true --cap-drop=ALL</ExtraParams>
   <Config Name="Web UI" Target="8000" Default="18000" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false">18000</Config>
