@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <Container version="2">
   <Name>AudibleCalendar</Name>
-  <Repository>audiblecalendar:local</Repository>
-  <Registry>https://github.com/brandochdaha/AudibleCalendar</Registry>
+  <Repository>ghcr.io/stalkerama/audiblecalendar:latest</Repository>
+  <Registry>https://github.com/stalkerama/AudibleCalendar-unraid/pkgs/container/audiblecalendar</Registry>
   <Network>bridge</Network>
   <Privileged>false</Privileged>
   <Support>https://github.com/brandochdaha/AudibleCalendar/issues</Support>
   <Project>https://github.com/brandochdaha/AudibleCalendar</Project>
-  <Overview>Track upcoming Audible releases from followed authors and series. Build the local image before installing; updates require rebuilding from the upstream source checkout. See https://github.com/stalkerama/AudibleCalendar-unraid</Overview>
+  <Overview>Track upcoming Audible releases from followed authors and series. Image is built from a pinned upstream revision. See https://github.com/stalkerama/AudibleCalendar-unraid</Overview>
   <WebUI>http://[IP]:[PORT:8000]/</WebUI>
   <ExtraParams>--security-opt=no-new-privileges:true --cap-drop=ALL</ExtraParams>
   <Config Name="Web UI" Target="8000" Default="18000" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false">18000</Config>
